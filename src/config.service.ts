@@ -32,7 +32,15 @@ class ConfigService {
     }
 
     public getDbSettings () {
-        let dbType = this.getValue('dbType')
+        let dbType;
+
+        const mode = this.getValue('MODE', false);
+
+        if (mode.toLowerCase().includes('local')) {
+            dbType = 'mysql'
+        } else if (mode.toLowerCase().includes('dev')) {
+            dbType = 'postgres'
+        }
 
         const dataBaseType: any = dbType;
 
