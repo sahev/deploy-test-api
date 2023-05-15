@@ -42,7 +42,7 @@ class ConfigService {
             synchronize: true,
             entities: [AppEntity],
             // ssl: this.isProduction(),
-            ssl: false, // true for external databases
+            ssl: /^true$/i.test(this.getValue('DB_SSL').toLowerCase()), // true for external databases
         };
     }
 }
