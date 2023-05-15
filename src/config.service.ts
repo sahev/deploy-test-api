@@ -36,16 +36,11 @@ class ConfigService {
 
         const mode = this.getValue('MODE', false);
 
-        console.log('mode', mode)
-
-
         if (mode.toLowerCase().includes('local')) {
             dbType = 'mysql'
         } else if (mode.toLowerCase().includes('dev')) {
             dbType = 'postgres'
         }
-
-        console.log('dbtype', dbType);
 
         let sqlSettings = {
             dbType: '',
@@ -76,7 +71,7 @@ class ConfigService {
                     password: this.getValue('POSTGRES_PASSWORD'),
                     database: this.getValue('POSTGRES_DATABASE'),
                 }
-                break;
+                break
             default:
                 sqlSettings = {
                     dbType: 'mysql',
@@ -109,13 +104,6 @@ class ConfigService {
 
 }
 
-const configService = new ConfigService(process.env)
-    .ensureValues([
-        'POSTGRES_HOST',
-        'POSTGRES_PORT',
-        'POSTGRES_USER',
-        'POSTGRES_PASSWORD',
-        'POSTGRES_DATABASE'
-    ]);
+const configService = new ConfigService(process.env);
 
 export { configService };
