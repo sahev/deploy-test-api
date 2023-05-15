@@ -36,13 +36,16 @@ class ConfigService {
 
         const mode = this.getValue('MODE', false);
 
+        console.log('mode', mode)
+
+
         if (mode.toLowerCase().includes('local')) {
             dbType = 'mysql'
         } else if (mode.toLowerCase().includes('dev')) {
             dbType = 'postgres'
         }
 
-        const dataBaseType: any = dbType;
+        console.log('dbtype', dbType);
 
         let sqlSettings = {
             dbType: '',
@@ -53,10 +56,10 @@ class ConfigService {
             database: ''
         }
 
-        switch (dataBaseType) {
+        switch (dbType) {
             case 'mysql':
                 sqlSettings = {
-                    dbType: dataBaseType,
+                    dbType: 'mysql',
                     host: this.getValue('MYSQL_HOST'),
                     port: parseInt(this.getValue('MYSQL_PORT')),
                     username: this.getValue('MYSQL_USER'),
@@ -66,16 +69,17 @@ class ConfigService {
                 break;
             case 'postgres':
                 sqlSettings = {
-                    dbType: dataBaseType,
+                    dbType: 'postgres',
                     host: this.getValue('POSTGRES_HOST'),
                     port: parseInt(this.getValue('POSTGRES_PORT')),
                     username: this.getValue('POSTGRES_USER'),
                     password: this.getValue('POSTGRES_PASSWORD'),
                     database: this.getValue('POSTGRES_DATABASE'),
                 }
+                break;
             default:
                 sqlSettings = {
-                    dbType: this.getValue('dbType'),
+                    dbType: 'mysql',
                     host: this.getValue('MYSQL_HOST'),
                     port: parseInt(this.getValue('MYSQL_PORT')),
                     username: this.getValue('MYSQL_USER'),
