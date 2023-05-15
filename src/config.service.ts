@@ -31,77 +31,20 @@ class ConfigService {
         return mode != 'DEV';
     }
 
-    public getDbSettings () {
-        let dbType;
-
-        const mode = this.getValue('MODE', false);
-
-        if (mode.toLowerCase().includes('local')) {
-            dbType = 'mysql'
-        } else if (mode.toLowerCase().includes('dev')) {
-            dbType = 'postgres'
-        }
-
-        let sqlSettings = {
-            dbType: '',
-            host: '',
-            port: 0,
-            username: '',
-            password: '',
-            database: ''
-        }
-
-        switch (dbType) {
-            case 'mysql':
-                sqlSettings = {
-                    dbType: 'mysql',
-                    host: this.getValue('MYSQL_HOST'),
-                    port: parseInt(this.getValue('MYSQL_PORT')),
-                    username: this.getValue('MYSQL_USER'),
-                    password: this.getValue('MYSQL_PASSWORD'),
-                    database: this.getValue('MYSQL_DATABASE'),
-                }
-                break;
-            case 'postgres':
-                sqlSettings = {
-                    dbType: 'postgres',
-                    host: this.getValue('POSTGRES_HOST'),
-                    port: parseInt(this.getValue('POSTGRES_PORT')),
-                    username: this.getValue('POSTGRES_USER'),
-                    password: this.getValue('POSTGRES_PASSWORD'),
-                    database: this.getValue('POSTGRES_DATABASE'),
-                }
-                break
-            default:
-                sqlSettings = {
-                    dbType: 'mysql',
-                    host: this.getValue('MYSQL_HOST'),
-                    port: parseInt(this.getValue('MYSQL_PORT')),
-                    username: this.getValue('MYSQL_USER'),
-                    password: this.getValue('MYSQL_PASSWORD'),
-                    database: this.getValue('MYSQL_DATABASE'),
-                }
-                break;
-        }
-        return sqlSettings
-    }
-
     public getTypeOrmConfig (): TypeOrmModuleOptions {
-        const dbSettings = this.getDbSettings();
-
         return {
-            type: dbSettings.dbType as any,
-            host: dbSettings.host,
-            port: dbSettings.port,
-            username: dbSettings.username,
-            password: dbSettings.password,
-            database: dbSettings.database,
+            type: this.getValue('DB_TYPE') as any,
+            host: this.getValue('DB_HOST'),
+            port: parseInt(this.getValue('DB_PORT')),
+            username: this.getValue('DB_USER'),
+            password: this.getValue('DB_PASSWORD'),
+            database: this.getValue('DB_DATABASE'),
             synchronize: true,
             entities: [AppEntity],
-            ssl: this.isProduction(),
+            // ssl: this.isProduction(),
+            ssl: false, // true for external databases
         };
     }
-
 }
 
 const configService = new ConfigService(process.env);
